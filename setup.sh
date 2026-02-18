@@ -4,6 +4,16 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SEABLOCK_TRUNK="${SCRIPT_DIR}/trunk"
 
+# Check prerequisites
+missing=()
+for cmd in git tar; do
+  command -v "${cmd}" &>/dev/null || missing+=("${cmd}")
+done
+if [ ${#missing[@]} -gt 0 ]; then
+  printf -- "Error: missing required commands: %s\n" "${missing[*]}" >&2
+  exit 1
+fi
+
 FACTORIO_VERSION=2.0.72
 FACTORIO_ARCHIVE="factorio_linux_${FACTORIO_VERSION}.tar.xz"
 FACTORIO_DOWNLOAD_URL="https://factorio.com/get-download/${FACTORIO_VERSION}/alpha/linux64"
@@ -11,9 +21,17 @@ FACTORIO_DOWNLOAD_URL="https://factorio.com/get-download/${FACTORIO_VERSION}/alp
 read -r -p "Download and extract Factorio ${FACTORIO_VERSION}? [y/N] " response
 case "${response}" in
   [yY])
+    if ! command -v curl &>/dev/null && ! command -v wget &>/dev/null; then
+      printf -- "Error: curl or wget is required to download Factorio\n" >&2
+      exit 1
+    fi
     if [ ! -f "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" ]; then
       printf -- "Downloading %s...\n" "${FACTORIO_ARCHIVE}"
-      curl -L "${FACTORIO_DOWNLOAD_URL}" -o "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}"
+      if command -v curl &>/dev/null; then
+        curl -L "${FACTORIO_DOWNLOAD_URL}" -o "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}"
+      else
+        wget -O "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" "${FACTORIO_DOWNLOAD_URL}"
+      fi
     fi
     FACTORIO_DIR="${SCRIPT_DIR}/factorio"
     if [ ! -d "${FACTORIO_DIR}" ]; then
@@ -62,8 +80,11 @@ SEABLOCK_TRUNK_PACK=(
   'reskins-compatibility'
 )
 
-# Pull all submodules to latest commit on their tracked branch
-git -C "${SCRIPT_DIR}" submodule update --init --remote --merge --recursive
+# Pull latest changes from remote
+git -C "${SCRIPT_DIR}" pull --ff-only
+
+# Pull all submodules to the commit recorded in the parent repo
+git -C "${SCRIPT_DIR}" submodule update --init --recursive
 
 mkdir -p "${SEABLOCK_MODS}"
 
