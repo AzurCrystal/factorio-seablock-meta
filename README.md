@@ -38,8 +38,7 @@ Factorio SeaBlock 2 模组包的安装管理仓库，通过 git submodule 管理
 ### Linux / macOS
 
 - `git`
-- `tar`
-- `curl` 或 `wget`（仅在需要下载 Factorio 时）
+- `tar`（仅在使用仓库根目录压缩包安装 Factorio 时）
 
 ### Windows
 

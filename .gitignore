@@ -3,4 +3,5 @@ factorio/
 
 # VSCode
 .vscode/
+.claude/
 *.code-workspace
