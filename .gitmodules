@@ -1,0 +1,39 @@
+[submodule "trunk/reskins-angels"]
+	path = trunk/reskins-angels
+	url = https://github.com/AzurCrystal/reskins-angels.git
+	branch = dev
+[submodule "trunk/reskins-bobs"]
+	path = trunk/reskins-bobs
+	url = https://github.com/AzurCrystal/reskins-bobs.git
+	branch = dev
+[submodule "trunk/CircuitProcessing"]
+	path = trunk/CircuitProcessing
+	url = https://github.com/AzurCrystal/CircuitProcessing.git
+	branch = dev
+[submodule "trunk/bobsmods"]
+	path = trunk/bobsmods
+	url = https://github.com/AzurCrystal/bobsmods.git
+	branch = dev
+[submodule "trunk/Angelmods"]
+	path = trunk/Angelmods
+	url = https://github.com/AzurCrystal/Angelmods.git
+	branch = dev
+[submodule "trunk/LandfillPainting"]
+	path = trunk/LandfillPainting
+	url = https://github.com/AzurCrystal/LandfillPainting.git
+	branch = dev2.0
+[submodule "trunk/ScienceCostTweakerM"]
+	path = trunk/ScienceCostTweakerM
+	url = https://github.com/AzurCrystal/ScienceCostTweakerM.git
+	branch = dev-merge-fixes
+[submodule "trunk/SpaceMod"]
+	path = trunk/SpaceMod
+	url = https://github.com/AzurCrystal/SpaceMod.git
+	branch = main
+[submodule "trunk/SeaBlock"]
+	path = trunk/SeaBlock
+	url = https://github.com/AzurCrystal/SeaBlock.git
+	branch = dev
+[submodule "trunk/reskins-compatibility"]
+	path = trunk/reskins-compatibility
+	url = https://github.com/AzurCrystal/reskins-compatibility.git

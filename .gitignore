@@ -1,0 +1,6 @@
+# Factorio installation (used when FACTORIO_LOCAL=0)
+factorio/
+
+# VSCode
+.vscode/
+*.code-workspace
