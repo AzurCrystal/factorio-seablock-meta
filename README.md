@@ -26,7 +26,12 @@ Factorio SeaBlock 2 模组包的安装管理仓库，通过 git submodule 管理
 
 ### factorio.com 版本锁定方法
 
-在安装脚本中选择 **Y**，脚本会自动下载并使用 2.0.72 版本。
+前往 [factorio.com/download](https://factorio.com/download) 下载 **2.0.72** 版本：
+
+- Linux：下载 `factorio_linux_2.0.72.tar.xz`，放入仓库根目录，脚本会自动解压
+- Windows：下载 `factorio_win_2.0.72.zip`，放入仓库根目录，脚本会自动解压
+
+若压缩包不在仓库根目录，脚本则默认使用本地已安装的 Factorio。
 
 ## 前置要求
 
@@ -69,20 +74,18 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 
 脚本会依次执行：
 
-1. 询问是否下载并解压 Factorio 2.0.72
-2. 拉取本仓库的最新变更
-3. 将所有 submodule 更新到仓库记录的 commit
+1. 拉取本仓库的最新变更
+2. 将所有 submodule 更新到仓库记录的 commit
+3. 若仓库根目录存在 Factorio 压缩包则自动解压，否则使用本地已安装的 Factorio
 4. 为 `trunk/` 中的各模组目录在 Factorio mods 目录中创建符号链接（Linux/macOS）或 Junction（Windows）
 5. 将 `trunk/` 中版本锁定的 `.zip` 模组复制到 mods 目录
 
 ## Factorio 安装路径
 
-| 选择 | mods 目录 |
+| 情况 | mods 目录 |
 |------|----------|
-| **Y** — 脚本下载 Factorio | `<仓库根目录>/factorio/mods` |
-| **N** — 本地已安装 Factorio | Linux/macOS: `~/.factorio/mods` · Windows: `%APPDATA%\Factorio\mods` |
-
-选择 **Y** 时，压缩包会下载到仓库根目录并解压至 `<仓库根目录>/factorio/`。重复运行脚本时，若文件已存在则跳过下载和解压。
+| 仓库根目录存在压缩包 | `<仓库根目录>/factorio/mods` |
+| 本地已安装 Factorio | Linux/macOS: `~/.factorio/mods` · Windows: `%APPDATA%\Factorio\mods` |
 
 ## 更新
 

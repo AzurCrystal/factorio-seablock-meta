@@ -12,15 +12,10 @@ if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
 
 $FactorioVersion = '2.0.72'
 $FactorioArchive = "factorio_win_$FactorioVersion.zip"
-$FactorioDownloadUrl = "https://factorio.com/get-download/$FactorioVersion/alpha/win64-manual"
 
-$response = Read-Host "Download and extract Factorio $FactorioVersion? [y/N]"
-if ($response -imatch '^y') {
-    $archivePath = Join-Path $ScriptDir $FactorioArchive
-    if (-not (Test-Path $archivePath)) {
-        Write-Host "Downloading $FactorioArchive..."
-        Invoke-WebRequest -Uri $FactorioDownloadUrl -OutFile $archivePath
-    }
+# Determine mods directory
+$archivePath = Join-Path $ScriptDir $FactorioArchive
+if (Test-Path $archivePath) {
     $FactorioDir = Join-Path $ScriptDir 'factorio'
     if (-not (Test-Path $FactorioDir)) {
         Write-Host "Extracting $FactorioArchive..."

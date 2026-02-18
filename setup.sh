@@ -5,44 +5,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SEABLOCK_TRUNK="${SCRIPT_DIR}/trunk"
 
 # Check prerequisites
-missing=()
-for cmd in git tar; do
-  command -v "${cmd}" &>/dev/null || missing+=("${cmd}")
-done
-if [ ${#missing[@]} -gt 0 ]; then
-  printf -- "Error: missing required commands: %s\n" "${missing[*]}" >&2
+if ! command -v git &>/dev/null; then
+  printf -- "Error: git is required but not found\n" >&2
+  exit 1
+fi
+
+if ! git -C "${SCRIPT_DIR}" rev-parse --git-dir &>/dev/null; then
+  printf -- "Error: %s is not inside a git repository\n" "${SCRIPT_DIR}" >&2
   exit 1
 fi
 
 FACTORIO_VERSION=2.0.72
 FACTORIO_ARCHIVE="factorio_linux_${FACTORIO_VERSION}.tar.xz"
-FACTORIO_DOWNLOAD_URL="https://factorio.com/get-download/${FACTORIO_VERSION}/alpha/linux64"
 
-read -r -p "Download and extract Factorio ${FACTORIO_VERSION}? [y/N] " response
-case "${response}" in
-  [yY])
-    if ! command -v curl &>/dev/null && ! command -v wget &>/dev/null; then
-      printf -- "Error: curl or wget is required to download Factorio\n" >&2
-      exit 1
-    fi
-    if [ ! -f "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" ]; then
-      printf -- "Downloading %s...\n" "${FACTORIO_ARCHIVE}"
-      if command -v curl &>/dev/null; then
-        curl -L "${FACTORIO_DOWNLOAD_URL}" -o "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}"
-      else
-        wget -O "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" "${FACTORIO_DOWNLOAD_URL}"
-      fi
-    fi
-    FACTORIO_DIR="${SCRIPT_DIR}/factorio"
-    if [ ! -d "${FACTORIO_DIR}" ]; then
-      tar -xf "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" -C "${SCRIPT_DIR}"
-    fi
-    SEABLOCK_MODS="${FACTORIO_DIR}/mods"
-    ;;
-  *)
-    SEABLOCK_MODS="${HOME}/.factorio/mods"
-    ;;
-esac
+# Determine mods directory
+if [ -f "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" ]; then
+  FACTORIO_DIR="${SCRIPT_DIR}/factorio"
+  if [ ! -d "${FACTORIO_DIR}" ]; then
+    printf -- "Extracting %s...\n" "${FACTORIO_ARCHIVE}"
+    tar -xf "${SCRIPT_DIR}/${FACTORIO_ARCHIVE}" -C "${SCRIPT_DIR}"
+  fi
+  SEABLOCK_MODS="${FACTORIO_DIR}/mods"
+else
+  SEABLOCK_MODS="${HOME}/.factorio/mods"
+fi
 
 SEABLOCK_TRUNK_PACK=(
   'SeaBlock/SeaBlock'
